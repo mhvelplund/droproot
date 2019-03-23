@@ -1,13 +1,11 @@
 FROM dropwizard-example
 
-EXPOSE 4000
+ENV ROLL_UP=droproot
+ENV COLLECTOR_ADDRESS=over_ride_me:8181
 
-# HEALTHCHECK --interval=600s --timeout=1s --start-period=30s \
-# 	CMD curl --fail http://localhost:8081/healthcheck || exit 1
-
-COPY admin.json /admin.json
 COPY glowroot/glowroot.jar /glowroot.jar
-COPY glowroot/lib/glowroot-embedded-collector.jar /lib/glowroot-embedded-collector.jar
 
-
-CMD [ "java", "-javaagent:/glowroot.jar", "-jar", "application.jar", "server", "example.yml" ]
+# Configure central collector
+CMD echo "agent.id=$ROLL_UP::$HOSTNAME" > /glowroot.properties && \
+	echo "collector.address=$COLLECTOR_ADDRESS" >> /glowroot.properties && \
+	java -javaagent:/glowroot.jar -jar application.jar server example.yml
