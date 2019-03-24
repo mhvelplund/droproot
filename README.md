@@ -9,8 +9,8 @@ docker build -t droproot .
 # Deploy global collector
 docker stack deploy -c infrastructure.yml infrastructure
 
-# Deploy "droproot"
-docker stack deploy -c droproot.yml droproot
+# Deploy "droproot". Collector address should be the host IP plus the port the global collector listens for gRPC on (8181)
+COLLECTOR_ADDRESS=10.0.0.10:8181 docker stack deploy -c droproot.yml droproot
 ```
 
 ## Troubleshooting
@@ -20,7 +20,7 @@ which prevents the service from becoming healthy after startup.
 
 After deploying infrastructure, we run: `docker stack services infrastructure`.
 
-```
+```text
 ID                  NAME                        MODE                REPLICAS            IMAGE                              PORTS
 ei4v26g6snsx        infrastructure_cassandra    replicated          0/1                 cassandra:latest
 iurmq2shu5gj        infrastructure_visualizer   replicated          0/1                 dockersamples/visualizer:stable    *:8080->8080/tcp
@@ -29,7 +29,7 @@ kjhajzrj4bwq        infrastructure_glowroot     replicated          0/1         
 
 ... everything is starting up
 
-```
+```text
 ID                  NAME                        MODE                REPLICAS            IMAGE                              PORTS
 ei4v26g6snsx        infrastructure_cassandra    replicated          1/1                 cassandra:latest
 iurmq2shu5gj        infrastructure_visualizer   replicated          1/1                 dockersamples/visualizer:stable    *:8080->8080/tcp

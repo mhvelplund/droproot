@@ -6,6 +6,6 @@ services:
     deploy:
       replicas: 2
     environment:
-      COLLECTOR_ADDRESS: '10.0.0.10:8181'
+      COLLECTOR_ADDRESS: $COLLECTOR_ADDRESS #'10.0.0.10:8181'
     ports:
       - '8443:8443'
