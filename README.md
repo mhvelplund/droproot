@@ -10,7 +10,10 @@ docker build -t droproot .
 docker stack deploy -c infrastructure.yml infrastructure
 
 # Deploy "droproot". Collector address should be the host IP plus the port the global collector listens for gRPC on (8181)
-COLLECTOR_ADDRESS=10.0.0.10:8181 docker stack deploy -c droproot.yml droproot
+# Edit glowroot.properties so collector address points at the global collector, i.e. specify the host machine ip and port. 
+# Example: 
+#    collector.address=10.0.0.10:8181
+docker stack deploy -c droproot.yml droproot
 ```
 
 ## Troubleshooting

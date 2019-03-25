@@ -5,7 +5,11 @@ services:
     image: droproot
     deploy:
       replicas: 2
-    environment:
-      COLLECTOR_ADDRESS: $COLLECTOR_ADDRESS #'10.0.0.10:8181'
     ports:
       - '8443:8443'
+    configs:
+      - source: collector_address
+        target: /glowroot.properties.sample
+configs:
+  collector_address:
+    file: ./glowroot.properties
